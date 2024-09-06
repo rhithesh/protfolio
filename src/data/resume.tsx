@@ -113,6 +113,7 @@ export const DATA = {
         },
       ],
       image: "/s.png",
+      video: "",
     },
   ],
   hackathons: [],
