@@ -61,11 +61,11 @@ export const DATA = {
   work: [
     {
       company: "Frelancer",
-      href: "https://atomic.finance",
+      href: "",
       badges: [],
       location: "Remote",
       title: "full stack developer",
-      logoUrl: "/atomic.png",
+      logoUrl: "/f.png",
       start: "april 2024",
       end: "present",
       description:
