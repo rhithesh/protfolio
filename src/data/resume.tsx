@@ -9,7 +9,7 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/sanfrancisco",
   description: "CS student trying to explore web2 and web3!",
   summary: "A cs student who is in his 3rd year, .",
-  avatarUrl: "/me.png",
+  avatarUrl: "/hithesh.jpg",
   skills: [
     "React",
     "Next.js",
