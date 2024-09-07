@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import Image from "next/image";
 
 const BLUR_FADE_DELAY = 0.001;
 
@@ -32,8 +33,12 @@ export default function Page() {
             </div>
             <BlurFade delay={BLUR_FADE_DELAY}>
               <Avatar className="size-28 border">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
+                <Image
+                  width={130}
+                  height={100}
+                  alt={DATA.name}
+                  src={DATA.avatarUrl}
+                />
               </Avatar>
             </BlurFade>
           </div>
