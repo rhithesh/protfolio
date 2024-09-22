@@ -108,3 +108,34 @@ const createNft1 = async () => {
 createNft1();
 ```
 
+Explanation of the Code
+Initialize Umi: We start by creating a connection to the Solana Devnet. The createUmi function sets up the client, and we add two key plugins:
+
+mplTokenMetadata: Used to handle the NFT metadata.
+irysUploader: Responsible for uploading the image and metadata to the IRYS service.
+Decoding the Secret Key: To sign transactions on Solana, we need a keypair. The secret key is decoded from Base58 format using bs58.decode(), and the createKeypairFromSecretKey() method creates a keypair for signing.
+
+Setting the Signer Identity: The decoded keypair is set as the signer identity using the signerIdentity() method.
+
+Uploading the Image: The image (test.png) is read using fs.readFileSync(). It is then converted into a Umi-compatible file format (createGenericFile), and uploaded using the uploader.upload() method. The upload returns a URI which points to the stored image.
+
+Creating Metadata: Metadata for the NFT is defined, which includes fields like name, description, attributes, and properties. The image URI from the previous step is added to this metadata.
+
+Uploading Metadata: The metadata object is uploaded as JSON using uploader.uploadJson(). This returns a URI that can be used when creating the NFT.
+
+Generating a New Signer for the NFT Mint: The generateSigner() method creates a new signer, which is responsible for minting the NFT.
+
+Creating the NFT: The createNft() method creates the NFT on the Solana blockchain. We pass the mint signer, metadata URI, and a seller fee as parameters. Once the transaction is confirmed, the NFT is successfully minted.
+
+Deserializing the Transaction Signature: Finally, the transaction signature is deserialized and logged using base58.deserialize(), allowing us to verify it on the blockchain.
+
+Conclusion
+This script provides a streamlined way to create an NFT on the Solana blockchain, handling both the image and metadata uploads via the IRYS service. By leveraging Umi and Metaplex, you can create, manage, and mint NFTs with ease.
+
+
+
+
+
+
+
+
