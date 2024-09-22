@@ -1,11 +1,110 @@
 ---
-title: "Hello World"
-publishedAt: "2024-06-18"
-summary: "My first post on my new blog."
+title: "create your first nft with metaplex"
+publishedAt: "2024-09-23"
+summary: "Making a  cnft."
 ---
 
 Hi there!
 
 ```jsx
-console.log("Hello World");
+import {
+  createProgrammableNft,
+  mplTokenMetadata,
+  createNft,
+} from "@metaplex-foundation/mpl-token-metadata";
+import {
+  createGenericFile,
+  generateSigner,
+  percentAmount,
+  sol,
+  createSignerFromKeypair,
+  signerIdentity,
+} from "@metaplex-foundation/umi";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
+import { base58 } from "@metaplex-foundation/umi/serializers";
+import fs from "fs";
+import bs58 from "bs58";
+
+// Create the wrapper function
+const createNft1 = async () => {
+  // Step 1: Initialize Umi client with devnet connection
+  const umi = createUmi("https://api.devnet.solana.com")
+    .use(mplTokenMetadata())
+    .use(
+      irysUploader({
+        // The uploader for devnet
+        address: "https://devnet.irys.xyz/",
+      }),
+    );
+
+  // Step 2: Decode secret key to use for keypair creation
+  const encodedString =
+    "DxiLiYyNDjL78yRG3WS8rWSZ12Sa6vnWb4UMYz8UCw3bxpbFwx8Q3Ww9anM7g7axRXNDRUBkBZsHekXgevKvyRd";
+  const decodedBytes = bs58.decode(encodedString);
+  let keypair = umi.eddsa.createKeypairFromSecretKey(decodedBytes);
+
+  // Step 3: Set the keypair as the signer identity
+  const signer = createSignerFromKeypair(umi, keypair);
+  umi.use(signerIdentity(signer));
+
+  // Step 4: Read and upload the image
+  const imageFile = fs.readFileSync("test.png");
+  const umiImageFile = createGenericFile(imageFile, "test.png", {
+    tags: [{ name: "Content-Type", value: "image/png" }],
+  });
+  const imageUri = await umi.uploader.upload([umiImageFile]).catch((err) => {
+    throw new Error(err);
+  });
+
+  // Step 5: Create metadata for the NFT
+  const metadata = {
+    name: "2nd place",
+    description: "This is an NFT on Solana",
+    image: imageUri[0],
+    external_url: "https://example.com/my-nft.json",
+    attributes: [
+      {
+        trait_type: "trait1",
+        value: "value1",
+      },
+      {
+        trait_type: "trait2",
+        value: "value2",
+      },
+    ],
+    properties: {
+      files: [
+        {
+          uri: imageUri[0],
+          type: "image/png",
+        },
+      ],
+      category: "image",
+    },
+  };
+
+  // Step 6: Upload metadata to the uploader and get its URI
+  const metadataUri = await umi.uploader.uploadJson(metadata).catch((err) => {
+    throw new Error(err);
+  });
+
+  // Step 7: Generate a new signer for the NFT mint
+  const nftSigner = generateSigner(umi);
+
+  // Step 8: Create the NFT on the blockchain
+  const tx = await createNft(umi, {
+    mint: nftSigner,
+    sellerFeeBasisPoints: percentAmount(5.5),
+    name: "My NFT",
+    uri: metadataUri,
+  }).sendAndConfirm(umi);
+
+  // Step 9: Deserialize and log the transaction signature
+  console.log(base58.deserialize(tx.signature)[0]);
+};
+
+// Run the function
+createNft1();
 ```
+
