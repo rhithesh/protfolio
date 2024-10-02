@@ -76,7 +76,7 @@ export const DATA = {
       badges: [],
       location: "offline",
       title: "SDE intern",
-      logoUrl: "/f.png",
+      logoUrl: "/lnt.png",
       start: "oct 2023",
       end: "nov 2023",
       description:
