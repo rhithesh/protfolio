@@ -70,6 +70,17 @@ export const DATA = {
       end: "present",
       description:
         "Worked on various project on the MERN stack, with highily satisfied  customers with time constrains, Can work in US EU hours also.",
+    }, {
+      company: "L&T",
+      href: "",
+      badges: [],
+      location: "offline",
+      title: "SDE intern",
+      logoUrl: "/f.png",
+      start: "oct 2023",
+      end: "nov 2023",
+      description:
+        "Worked on writing api, created landing pages, worked on production codebase's.",
     },
   ],
   education: [
