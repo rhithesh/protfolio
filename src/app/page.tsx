@@ -186,7 +186,7 @@ export default function Page() {
       <section id="education">
         <motion.div
           onHoverStart={() => setTextColor(getRandomColor())} // Change color on hover
-          onHoverEnd={() => setTextColor("#000")} // Reset color when not hovering
+          onHoverEnd={() => setTextColor("#ffff")} // Reset color when not hovering
         >
           <motion.div
             animate={{ color: textColor }} // Animate the text color
