@@ -8,9 +8,12 @@ export const DATA = {
   location: "Bengaluru India",
   locationLink: "https://www.google.com/maps/place/sanfrancisco",
   description: "CS student trying to explore web2 and web3!",
-  summary: "A cs student who is in his 3rd year, .",
+  summary:
+    "Feels great building anythging around  the solana blockchain, writing smart contacts in rust .",
   avatarUrl: "/hithesh.jpg",
   skills: [
+    "Solana",
+    "Metaplex",
     "React",
     "Next.js",
     "Typescript",
@@ -70,7 +73,8 @@ export const DATA = {
       end: "present",
       description:
         "Worked on various project on the MERN stack, with highily satisfied  customers with time constrains, Can work in US EU hours also.",
-    }, {
+    },
+    {
       company: "L&T",
       href: "",
       badges: [],
@@ -112,6 +116,32 @@ export const DATA = {
         {
           type: "Website",
           href: "https://nosign.vercel.app/hithesh",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/s.png",
+      video: "",
+    },
+    {
+      title: "Chaos Crowd",
+      href: "https://chaoscrowd.xyz",
+      dates: "Jan 2024 - Feb 2024",
+      active: true,
+      description: "A Solana Blinks, Crowd-funding platform.",
+      technologies: [
+        "Web3 js",
+        "Solana",
+        "Next.js",
+        "Typescript",
+        "Redis",
+        "Prisma",
+        "TailwindCSS",
+        "Shadcn UI",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://chaoscrowd.xyz",
           icon: <Icons.globe className="size-3" />,
         },
       ],

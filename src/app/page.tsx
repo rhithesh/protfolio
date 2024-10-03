@@ -1,3 +1,4 @@
+"use client";
 import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
@@ -9,40 +10,87 @@ import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import Image from "next/image";
+import React, { useState } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 const BLUR_FADE_DELAY = 0.001;
 
 export default function Page() {
+  const [isHorizontal, setIsHorizontal] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const { scrollXProgress } = useScroll();
+  const [textColor, setTextColor] = useState("#000");
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  const invertedProgress = useTransform(scrollYProgress, (value) => 1 - value);
+
+  const invertedScaleY = useSpring(invertedProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
+      <motion.div
+        className="fixed left-0 !top-0 bottom-0 w-1 bg-black dark:bg-white origin-top"
+        style={{ scaleY: scaleY }}
+      />
+
       <section id="hero">
-        <div className="mx-auto w-full max-w-2xl space-y-8">
-          <div className="gap-2 flex justify-between">
-            <div className="flex-col flex flex-1 space-y-1.5">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]} 👋`}
-              />
-              <BlurFadeText
-                className="max-w-[600px] md:text-xl"
-                delay={BLUR_FADE_DELAY}
-                text={DATA.description}
-              />
-            </div>
-            <BlurFade delay={BLUR_FADE_DELAY}>
-              <Avatar className="size-28 border">
-                <Image
-                  width={130}
-                  height={100}
-                  alt={DATA.name}
-                  src={DATA.avatarUrl}
+        <motion.div
+          className="card"
+          whileHover={{ rotate: [0, 5, -5, 5, -5, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity, repeatType: "loop" }}
+          style={{
+            padding: "2rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <div className="mx-auto w-full max-w-2xl space-y-8">
+            <div className="gap-2 flex justify-between">
+              <div className="flex-col flex flex-1 space-y-1.5">
+                <BlurFadeText
+                  delay={BLUR_FADE_DELAY}
+                  className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
+                  yOffset={8}
+                  text={`Hi, I'm ${DATA.name.split(" ")[0]} 👋`}
                 />
-              </Avatar>
-            </BlurFade>
+                <BlurFadeText
+                  className="max-w-[600px] md:text-xl"
+                  delay={BLUR_FADE_DELAY}
+                  text={DATA.description}
+                />
+              </div>
+              <BlurFade delay={BLUR_FADE_DELAY}>
+                <Avatar className="size-28 border">
+                  <Image
+                    width={130}
+                    height={100}
+                    alt={DATA.name}
+                    src={DATA.avatarUrl}
+                  />
+                </Avatar>
+              </BlurFade>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </section>
       <section id="about">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
@@ -80,27 +128,42 @@ export default function Page() {
         </div>
       </section>
       <section id="education">
-        <div className="flex min-h-0 flex-col gap-y-3">
-          <BlurFade delay={BLUR_FADE_DELAY * 7}>
-            <h2 className="text-xl font-bold">Education</h2>
-          </BlurFade>
-          {DATA.education.map((education, id) => (
-            <BlurFade
-              key={education.school}
-              delay={BLUR_FADE_DELAY * 8 + id * 0.05}
-            >
-              <ResumeCard
-                key={education.school}
-                href={education.href}
-                logoUrl={education.logoUrl}
-                altText={education.school}
-                title={education.school}
-                subtitle={education.degree}
-                period={`${education.start} - ${education.end}`}
-              />
-            </BlurFade>
-          ))}
-        </div>
+        <motion.div
+          onHoverStart={() => setTextColor(getRandomColor())} // Change color on hover
+          onHoverEnd={() => setTextColor("#000")} // Reset color when not hovering
+        >
+          <motion.div
+            animate={{ color: textColor }} // Animate the text color
+            transition={{ duration: 0.3 }} // Smooth transition
+          >
+            <div className="flex min-h-0 flex-col gap-y-3">
+              <BlurFade delay={BLUR_FADE_DELAY * 7}>
+                <h2 className="text-xl font-bold">Education</h2>
+              </BlurFade>
+              {DATA.education.map((education, id) => (
+                <BlurFade
+                  key={education.school}
+                  delay={BLUR_FADE_DELAY * 8 + id * 0.05}
+                >
+                  <motion.div
+                    animate={{ color: textColor }} // Animate the text color
+                    transition={{ duration: 0.3 }} // Smooth transition
+                  >
+                    <ResumeCard
+                      key={education.school}
+                      href={"/"}
+                      logoUrl={"/"}
+                      altText={education.school}
+                      title={education.school}
+                      subtitle={education.degree}
+                      period={`${education.start} - ${education.end}`}
+                    />
+                  </motion.div>
+                </BlurFade>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
       </section>
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-3">
@@ -128,8 +191,8 @@ export default function Page() {
                   Check out my latest work
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I&apos;ve worked on a few projects, from simple websites to
-                  complex web applications.
+                  I&apos;d want to build profitable dapps in the solana
+                  blockchain , diving deep in to solana.
                 </p>
               </div>
             </div>
@@ -165,27 +228,40 @@ export default function Page() {
       </section>
       <section id="contact">
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 16}>
-            <div className="space-y-3">
-              <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                Contact
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Get in Touch
-              </h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Want to chat? Just shoot me a dm{" "}
-                <Link
-                  href={DATA.contact.social.X.url}
-                  className="text-blue-500 hover:underline"
+          <motion.div
+            onHoverStart={() => setTextColor(getRandomColor())} // Change text color on hover
+            onHoverEnd={() => setTextColor("#000")} // Reset to black
+          >
+            <BlurFade delay={500}>
+              <div className="space-y-3">
+                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                  Contact
+                </div>
+                <motion.h2
+                  className="text-3xl font-bold tracking-tighter sm:text-5xl"
+                  animate={{ color: textColor }} // Animate the text color
+                  style={{ color: textColor }} // Set the color directly to ensure it applies
+                  transition={{ duration: 0.3 }}
                 >
-                  with a direct question on twitter
-                </Link>{" "}
-                and I&apos;ll respond whenever I can. I will ignore all
-                soliciting.
-              </p>
-            </div>
-          </BlurFade>
+                  Get in Touch
+                </motion.h2>
+                <motion.p
+                  className="mx-auto max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                  animate={{ color: textColor }} // Animate the text color
+                  style={{ color: textColor }} // Set the color directly to ensure it applies
+                  transition={{ duration: 0.3 }}
+                >
+                  Want to chat? Just shoot me a dm{" "}
+                  <Link
+                    href={DATA.contact.social.X.url}
+                    className="text-blue-500 hover:underline"
+                  >
+                    with a direct question on twitter
+                  </Link>{" "}
+                </motion.p>
+              </div>
+            </BlurFade>
+          </motion.div>
         </div>
       </section>
     </main>
