@@ -12,7 +12,6 @@ import Markdown from "react-markdown";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import FlickeringGrid from "@/components/ui/flickering-grid";
 
 const BLUR_FADE_DELAY = 0.001;
 
