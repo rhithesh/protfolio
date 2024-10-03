@@ -20,6 +20,12 @@ export default function Page() {
   const { scrollYProgress } = useScroll();
   const { scrollXProgress } = useScroll();
   const [textColor, setTextColor] = useState("#000");
+  const scrollToSection = (id: string) => {
+    //@ts-ignore
+    document.getElementById(id).scrollIntoView({
+      behavior: "smooth",
+    });
+  };
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -47,6 +53,56 @@ export default function Page() {
         className="fixed left-0 !top-0 bottom-0 w-1 bg-black dark:bg-white origin-top"
         style={{ scaleY: scaleY }}
       />
+      <div className=" flex gap-10">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+          className=" text-balance py-2 w-[150px] px-4 rounded"
+          onClick={() => scrollToSection("projects")}
+        >
+          projects
+        </motion.button>
+        <motion.button
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className=" text-balance py-2 w-[150px] px-4 rounded"
+          onClick={() => scrollToSection("skills")}
+        >
+          skills
+        </motion.button>
+        <motion.button
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className=" text-balance py-2 w-[150px] px-4 rounded"
+          onClick={() => scrollToSection("education")}
+        >
+          education
+        </motion.button>
+      </div>
 
       <section id="hero">
         <motion.div

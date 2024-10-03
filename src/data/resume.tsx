@@ -131,9 +131,9 @@ export const DATA = {
       technologies: [
         "Web3 js",
         "Solana",
+        "Solana blinks",
         "Next.js",
         "Typescript",
-        "Redis",
         "Prisma",
         "TailwindCSS",
         "Shadcn UI",
