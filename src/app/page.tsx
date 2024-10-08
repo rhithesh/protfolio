@@ -12,10 +12,13 @@ import Markdown from "react-markdown";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const BLUR_FADE_DELAY = 0.001;
 
 export default function Page() {
+  const { theme, setTheme } = useTheme();
+
   const [isHorizontal, setIsHorizontal] = useState(false);
   const { scrollYProgress } = useScroll();
   const { scrollXProgress } = useScroll();
@@ -55,7 +58,7 @@ export default function Page() {
           style={{ scaleY: scaleY }}
         />
 
-        <div className=" flex gap-10">
+        <div className=" flex  flex-wrap gap-10">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -203,7 +206,9 @@ export default function Page() {
         <section id="education">
           <motion.div
             onHoverStart={() => setTextColor(getRandomColor())} // Change color on hover
-            onHoverEnd={() => setTextColor("#ffff")} // Reset color when not hovering
+            onHoverEnd={() =>
+              setTextColor(theme === "dark" ? "#ffffff" : "#000000")
+            }
           >
             <motion.div
               animate={{ color: textColor }} // Animate the text color
@@ -299,11 +304,35 @@ export default function Page() {
             </BlurFade>
           </div>
         </section>
+        <div className="w-full h-24 overflow-hidden relative bg-transparent">
+          <div className="absolute animate-dragon-move">
+            <div className="w-24 h-24 relative">
+              {/* Dragon body */}
+              <div className="absolute w-16 h-8 bg-red-500 rounded-full transform rotate-45 left-4 top-8"></div>
+
+              {/* Dragon head */}
+              <div className="absolute w-8 h-8 bg-red-600 rounded-full left-16 top-6">
+                {/* Eye */}
+                <div className="absolute w-2 h-2 bg-yellow-400 rounded-full top-2 right-2"></div>
+              </div>
+
+              {/* Wings */}
+              <div className="absolute w-8 h-8 bg-red-400 transform rotate-45 left-8 top-4 animate-wing-flap"></div>
+              <div className="absolute w-8 h-8 bg-red-400 transform rotate-45 left-8 top-10 animate-wing-flap delay-100"></div>
+
+              {/* Tail */}
+              <div className="absolute w-10 h-4 bg-red-500 rounded-full transform -rotate-45 left-0 top-10"></div>
+            </div>
+          </div>
+        </div>
+
         <section id="contact">
           <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
             <motion.div
               onHoverStart={() => setTextColor(getRandomColor())} // Change text color on hover
-              onHoverEnd={() => setTextColor("#000")} // Reset to black
+              onHoverEnd={() =>
+                setTextColor(theme === "dark" ? "#ffffff" : "#000000")
+              }
             >
               <div className="space-y-3">
                 <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">

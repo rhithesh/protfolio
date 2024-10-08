@@ -63,6 +63,15 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        moveLeftRight: {
+          "0%, 100%": { transform: "translateX(-100%)" },
+          "50%": { transform: "translateX(400%)" },
+        },
+        flap: {
+          "0%, 100%": { transform: "rotate(45deg) scaleY(1)" },
+          "50%": { transform: "rotate(45deg) scaleY(0.7)" },
+        },
+
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -73,6 +82,8 @@ const config = {
         },
       },
       animation: {
+        "dragon-move": "moveLeftRight 4s infinite",
+
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
