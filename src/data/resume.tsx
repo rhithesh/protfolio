@@ -91,7 +91,7 @@ export const DATA = {
     {
       school: "BMSCE",
       href: "https://www.bmsce.ac.in/",
-      degree: "Bachelors of Engineeering",
+      degree: "Bachelors of Engineeering in Computer Science",
       logoUrl: "/",
       start: "2022",
       end: "2026",
